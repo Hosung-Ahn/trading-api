@@ -1,12 +1,17 @@
-package com.kiapi.entity;
+package com.kiapi.entity.member;
 
+import com.kiapi.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class Member {
+@Getter
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
@@ -15,5 +20,4 @@ public class Member {
     @Column(unique = true)
     private String email;
     private String password;
-
 }
