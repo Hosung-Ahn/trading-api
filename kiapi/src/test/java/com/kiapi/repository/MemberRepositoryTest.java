@@ -1,6 +1,8 @@
 package com.kiapi.repository;
 
+import com.kiapi.dto.request.SignupRequest;
 import com.kiapi.entity.member.Member;
+import com.kiapi.factory.member.MemberFactory;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,13 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
+    MemberFactory memberFactory;
+    @Autowired
     EntityManager em;
     @Test
     void existsByUsernameTest() {
-        Member member = new Member("test name", "test@com", "test password");
+        SignupRequest signupRequest = new SignupRequest("test name", "test@com", "test password");
+        Member member = memberFactory.createUser(signupRequest);
         memberRepository.save(member);
 
         em.flush();
