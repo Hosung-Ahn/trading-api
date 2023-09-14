@@ -1,4 +1,4 @@
-package com.kiapi.jwt.exception;
+package com.kiapi.security.jwt.exception;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
