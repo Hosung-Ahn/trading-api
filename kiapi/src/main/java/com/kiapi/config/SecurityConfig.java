@@ -66,6 +66,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
