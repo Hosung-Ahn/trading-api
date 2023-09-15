@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,14 +17,21 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
+    private final AuthenticationProvider authenticationProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String accessToken = resolveToken(request);
-
-        // access token 의 validation 에 대한 로직이 추가 될 예정입니다.
-
+        
+        try {
+            if (accessToken != null) {
+                Authentication authentication = authenticationProvider.createAuthenticationWithAt(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception e) {
+            log.error("주어진 토큰으로 authentication을 만들 수 없습니다.", e);
+        }
         filterChain.doFilter(request, response);
     }
     private String resolveToken(HttpServletRequest request) {

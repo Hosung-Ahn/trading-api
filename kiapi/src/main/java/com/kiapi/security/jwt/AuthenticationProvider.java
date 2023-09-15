@@ -1,11 +1,15 @@
 package com.kiapi.security.jwt;
 
+import com.kiapi.entity.member.Member;
+import com.kiapi.security.userDetails.UserDetailsImpl;
+import com.kiapi.service.member.MemberService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -26,7 +30,7 @@ public class AuthenticationProvider {
         Long memberId = claims.get("memberId", Long.class);
 
         Member member = memberService.findById(memberId);
-        MemberDetails memberDetails = new MemberDetails(member);
+        UserDetails memberDetails = new UserDetailsImpl(member);
 
         return new UsernamePasswordAuthenticationToken(memberDetails, token, authorities);
     }
