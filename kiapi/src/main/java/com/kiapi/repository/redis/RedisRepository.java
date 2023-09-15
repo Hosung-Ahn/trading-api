@@ -1,4 +1,4 @@
-package com.moa.moa3.repository.redis;
+package com.kiapi.repository.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
