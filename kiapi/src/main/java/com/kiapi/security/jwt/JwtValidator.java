@@ -1,5 +1,6 @@
 package com.kiapi.security.jwt;
 
+import com.kiapi.exception.jwt.InvalidTokenRequestException;
 import com.kiapi.service.redis.AccessTokenService;
 import com.kiapi.service.redis.RefreshTokenService;
 import io.jsonwebtoken.ExpiredJwtException;

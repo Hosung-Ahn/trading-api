@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 //따라서 순환 의존성을 가지지 않도록 JwtTokenProvider 에는 추가적인 의존성을 가지지 않는 것을 권장합니다.
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtProvider {
     @Value("${secret.secret}")
     private String secretKey;
     @Value("${secret.access-token-validity-in-seconds}")
