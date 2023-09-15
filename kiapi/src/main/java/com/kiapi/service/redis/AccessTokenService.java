@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AccessTokenService {
-    @Value("${security.access-token-validity-in-seconds}")
+    @Value("${secret.access-token-validity-in-seconds}")
     private Long accessTokenValidityInSeconds;
     private final RedisRepository redisRepository;
 

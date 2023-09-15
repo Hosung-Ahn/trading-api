@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
-    @Value("${security.refresh-token-validity-in-seconds}")
+    @Value("${secret.refresh-token-validity-in-seconds}")
     private Long refreshTokenValidityInSeconds;
     private final RedisRepository redisRepository;
     private String getKey(String token) {

@@ -24,7 +24,6 @@ class MemberRepositoryTest {
     void existsByUsernameTest() {
         SignupRequest signupRequest = new SignupRequest("test name", "test@com", "test password");
         Member member = memberFactory.createUser(signupRequest);
-        memberRepository.save(member);
 
         em.flush();
         em.clear();

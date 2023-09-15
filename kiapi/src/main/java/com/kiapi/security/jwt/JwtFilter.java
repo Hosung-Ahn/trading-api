@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
-    private final AuthenticationProvider authenticationProvider;
+    private final LocalAuthenticationProvider localAuthenticationProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -26,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         try {
             if (accessToken != null) {
-                Authentication authentication = authenticationProvider.createAuthenticationWithAt(accessToken);
+                Authentication authentication = localAuthenticationProvider.createAuthenticationWithAt(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {

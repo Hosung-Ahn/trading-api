@@ -1,6 +1,7 @@
 package com.kiapi.security.jwt;
 
 import com.kiapi.entity.member.Member;
+import com.kiapi.repository.MemberRepository;
 import com.kiapi.security.userDetails.UserDetailsImpl;
 import com.kiapi.service.member.MemberService;
 import io.jsonwebtoken.Claims;
@@ -16,8 +17,8 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor
-public class AuthenticationProvider {
-    private final MemberService memberService;
+public class LocalAuthenticationProvider {
+    private final MemberRepository memberRepository;
     private final JwtValidator jwtValidator;
     private final JwtProvider jwtProvider;
 
@@ -29,7 +30,9 @@ public class AuthenticationProvider {
                 .commaSeparatedStringToAuthorityList(claims.get("authorities").toString());
         Long memberId = claims.get("memberId", Long.class);
 
-        Member member = memberService.findById(memberId);
+        Member member = memberRepository.findByIdWithRoles(memberId)
+                .orElseThrow(()->
+                        new IllegalArgumentException("존재하지 않는 회원입니다."));
         UserDetails memberDetails = new UserDetailsImpl(member);
 
         return new UsernamePasswordAuthenticationToken(memberDetails, token, authorities);

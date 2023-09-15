@@ -14,9 +14,9 @@ public class JwtService {
     private final JwtProvider jwtProvider;
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
-    private final AuthenticationProvider authenticationProvider;
+    private final LocalAuthenticationProvider localAuthenticationProvider;
 
-    private AtRt createAtRt(Authentication authentication) {
+    public AtRt createAtRt(Authentication authentication) {
         String accessToken = jwtProvider.createAccessToken(authentication);
         String refreshToken = jwtProvider.createRefreshToken(authentication);
         Long refreshTokenExpirationInMilliseconds = getTokenExpirationInMilliseconds(refreshToken);
@@ -28,7 +28,7 @@ public class JwtService {
 
     public AtRt refresh(String refreshToken) {
         Authentication authentication =
-                authenticationProvider.createAuthenticationWithRt(refreshToken);
+                localAuthenticationProvider.createAuthenticationWithRt(refreshToken);
 
         String oldAccessToken = refreshTokenService.getAt(refreshToken);
         accessTokenService.deleteAt(oldAccessToken);
