@@ -11,29 +11,22 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private Long id;
-    private String username;
-    private String email;
-    @JsonIgnore
-    private String password;
+    private Member member;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Member member) {
-        this.id = member.getId();
-        this.username = member.getUsername();
-        this.email = member.getEmail();
-        this.password = member.getPassword();
+        this.member = member;
         this.authorities =  member.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
     }
 
-    public Long getId() {
-        return id;
+    public Member getMember() {
+        return member;
     }
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return member.getId();
     }
 
     @Override
@@ -43,14 +36,13 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return member.getEmail();
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

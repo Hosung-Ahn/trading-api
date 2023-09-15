@@ -14,7 +14,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailWithRoles(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입된 이메일이 존재하지 않습니다."));
         return new UserDetailsImpl(member);
     }
