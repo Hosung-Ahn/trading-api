@@ -3,7 +3,6 @@ package com.kiapi.security.jwt;
 import com.kiapi.entity.member.Member;
 import com.kiapi.repository.MemberRepository;
 import com.kiapi.security.userDetails.UserDetailsImpl;
-import com.kiapi.service.member.MemberService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
