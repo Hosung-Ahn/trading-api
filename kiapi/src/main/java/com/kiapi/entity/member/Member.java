@@ -30,6 +30,15 @@ public class Member extends BaseEntity {
     private String email;
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String appKey;
+    @NotBlank
+    private String secretKey;
+    @NotBlank
+    private String account;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "member_roles",
             joinColumns = @JoinColumn(name = "member_id"),
@@ -37,10 +46,14 @@ public class Member extends BaseEntity {
     private Set<Role> roles = new HashSet<>();
 
     @Builder
-    public Member(String username, String email, String password, Set<Role> roles) {
+
+    public Member(String username, String email, String password, String appKey, String secretKey, String account, Set<Role> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.appKey = appKey;
+        this.secretKey = secretKey;
+        this.account = account;
         this.roles = roles;
     }
 }

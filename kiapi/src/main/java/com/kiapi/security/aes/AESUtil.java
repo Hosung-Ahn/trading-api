@@ -19,7 +19,7 @@ import java.util.Base64;
 public class AESUtil {
     @Value("${secret.secret-key}")
     private String secretKey;
-    private SecretKey key;
+    private static SecretKey key;
     private static final String ALGORITHM = "AES";
 
     @PostConstruct
@@ -31,7 +31,7 @@ public class AESUtil {
         key = new SecretKeySpec(keyBytes, ALGORITHM);
     }
 
-    public static String encrypt(String data) {
+    public String encrypt(String data) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -44,7 +44,7 @@ public class AESUtil {
         }
     }
 
-    public static String decrypt(String encryptedData){
+    public String decrypt(String encryptedData){
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, key);

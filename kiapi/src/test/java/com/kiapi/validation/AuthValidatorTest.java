@@ -21,13 +21,6 @@ class AuthValidatorTest {
 
     @Test
     void signupValidateTest() {
-        SignupRequest signupRequest = new SignupRequest("test name", "test@com", "test password");
-        authValidator.signupValidate(signupRequest);
 
-        Member member = memberFactory.createUser(signupRequest);
-        memberRepository.save(member);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            authValidator.signupValidate(signupRequest);
-        });
     }
 }

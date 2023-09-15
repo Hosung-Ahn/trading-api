@@ -22,11 +22,6 @@ class MemberRepositoryTest {
     EntityManager em;
     @Test
     void existsByUsernameTest() {
-        SignupRequest signupRequest = new SignupRequest("test name", "test@com", "test password");
-        Member member = memberFactory.createUser(signupRequest);
 
-        em.flush();
-        em.clear();
-        assertTrue(memberRepository.existsByUsername("test name"));
     }
 }

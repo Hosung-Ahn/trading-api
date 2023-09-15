@@ -4,6 +4,7 @@ import com.kiapi.dto.request.SignupRequest;
 import com.kiapi.dto.response.MessageResponse;
 import com.kiapi.dto.response.ProfileResponse;
 import com.kiapi.entity.member.Member;
+import com.kiapi.security.aes.AESUtil;
 import com.kiapi.security.userDetails.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class TradingController {
+    private final AESUtil AESUtil;
     @GetMapping("profile")
     public ResponseEntity<?> registerMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         Member member = principal.getMember();
         return ResponseEntity.ok(
-                new ProfileResponse(member)
+                new ProfileResponse(member, AESUtil)
         );
     }
 }

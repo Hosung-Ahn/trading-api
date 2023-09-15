@@ -6,6 +6,7 @@ import com.kiapi.entity.member.Member;
 import com.kiapi.entity.member.Role;
 import com.kiapi.repository.MemberRepository;
 import com.kiapi.repository.RoleRepository;
+import com.kiapi.security.aes.AESUtil;
 import com.kiapi.validation.AuthValidator;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class MemberFactory {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthValidator authValidator;
+    private final AESUtil AESUtil;
+
     public Member createUser(SignupRequest signupRequest) {
         authValidator.signupValidate(signupRequest);
         Member member = Member.builder()
@@ -28,7 +31,11 @@ public class MemberFactory {
                 .email(signupRequest.getEmail())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .roles(Set.of(roleRepository.findByName(ERole.ROLE_USER)))
+                .appKey(AESUtil.encrypt(signupRequest.getAppKey()))
+                .secretKey(AESUtil.encrypt(signupRequest.getSecretKey()))
+                .account(AESUtil.encrypt(signupRequest.getAccount()))
                 .build();
+
         memberRepository.save(member);
         return member;
     }
