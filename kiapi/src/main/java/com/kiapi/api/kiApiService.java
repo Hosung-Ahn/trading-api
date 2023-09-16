@@ -67,6 +67,8 @@ public class kiApiService {
         issueAccessToken(member);
         // access token 을 redis 에서 가져옵니다.
         String accessToken = kiApiAccessTokenService.getAccessToken(member.getId());
+        String appKey = AESUtil.decrypt(member.getAppKey());
+        String secretKey = AESUtil.decrypt(member.getSecretKey());
         // api 요청이 예외가 발생하지 않는다고 가정하였습니다.
         // 예외가 발생한 상황에 대해 처리할 필요가 있습니다.
 
@@ -75,6 +77,7 @@ public class kiApiService {
                 .queryParam("CANO", account[0])
                 .queryParam("ACNT_PRDT_CD", account[1])
                 .queryParam("AFHR_FLPR_YN", "N")
+                .queryParam("OFL_YN", "")
                 .queryParam("INQR_DVSN", "02")
                 .queryParam("UNPR_DVSN", "01")
                 .queryParam("FUND_STTL_ICLD_YN", "N")
@@ -92,11 +95,12 @@ public class kiApiService {
                     header.setContentType(MediaType.APPLICATION_JSON);
                     header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                     header.add("tr_id", "VTTC8434R");
+                    header.add("appkey", appKey);
+                    header.add("appsecret", secretKey);
                 })
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
         return response;
     }
-
 }

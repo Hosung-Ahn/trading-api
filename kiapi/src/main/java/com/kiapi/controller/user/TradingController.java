@@ -20,7 +20,7 @@ public class TradingController {
     public ResponseEntity<?> getBalance() {
         Member member = getMember();
 
-        return ResponseEntity.ok("balance");
+        return ResponseEntity.ok(kiApiService.getBalance(member));
     }
 
     private Member getMember() {
