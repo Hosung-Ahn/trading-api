@@ -32,8 +32,10 @@ public class Member extends BaseEntity {
     private String password;
 
     @NotBlank
+    @Column(columnDefinition = "TEXT")
     private String appKey;
     @NotBlank
+    @Column(columnDefinition = "TEXT")
     private String secretKey;
     @NotBlank
     private String account;
@@ -46,7 +48,6 @@ public class Member extends BaseEntity {
     private Set<Role> roles = new HashSet<>();
 
     @Builder
-
     public Member(String username, String email, String password, String appKey, String secretKey, String account, Set<Role> roles) {
         this.username = username;
         this.email = email;
