@@ -1,4 +1,4 @@
-package com.kiapi.dto.api.request;
+package com.kiapi.dto.kiapi.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,7 +1,9 @@
 package com.kiapi.api;
 
-import com.kiapi.dto.api.request.AccessTokenRequest;
-import com.kiapi.dto.api.response.AccessTokenResponse;
+import com.kiapi.dto.kiapi.request.AccessTokenRequest;
+import com.kiapi.dto.kiapi.request.OrderStockRequest;
+import com.kiapi.dto.request.DomesticStockOnMarkerPriceRequest;
+import com.kiapi.dto.kiapi.response.AccessTokenResponse;
 import com.kiapi.entity.member.Member;
 import com.kiapi.security.aes.AESUtil;
 import com.kiapi.service.redis.KiApiAccessTokenService;
@@ -63,9 +65,8 @@ public class kiApiService {
         return LocalDateTime.parse(dateString, formatter);
     }
 
-    public String getBalance(Member member) {
+    public String getDomesticBalance(Member member) {
         issueAccessToken(member);
-        // access token 을 redis 에서 가져옵니다.
         String accessToken = kiApiAccessTokenService.getAccessToken(member.getId());
         String appKey = AESUtil.decrypt(member.getAppKey());
         String secretKey = AESUtil.decrypt(member.getSecretKey());
@@ -102,5 +103,31 @@ public class kiApiService {
                 .bodyToMono(String.class)
                 .block();
         return response;
+    }
+
+    public String orderDomesticStockOnMarketPrice(Member member, DomesticStockOnMarkerPriceRequest requestDto) {
+        issueAccessToken(member);
+        String accessToken = kiApiAccessTokenService.getAccessToken(member.getId());
+        String appKey = AESUtil.decrypt(member.getAppKey());
+        String secretKey = AESUtil.decrypt(member.getSecretKey());
+        String[] account = AESUtil.decrypt(member.getAccount()).split("-");
+
+        // api 요청이 예외가 발생하지 않는다고 가정하였습니다.
+        // 예외가 발생한 상황에 대해 처리할 필요가 있습니다.
+        return WebClient.create()
+                .post()
+                .uri("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/trading/order-cash")
+                .headers(header -> {
+                    header.setContentType(MediaType.APPLICATION_JSON);
+                    header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
+                    header.setBearerAuth(accessToken);
+                    header.add("tr_id", "VTTC0802U");
+                    header.add("appkey", appKey);
+                    header.add("appsecret", secretKey);
+                })
+                .bodyValue(new OrderStockRequest(account, requestDto))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }
