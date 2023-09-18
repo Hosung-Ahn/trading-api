@@ -6,4 +6,5 @@ import lombok.Data;
 public class DomesticStockOnMarkerPriceRequest {
     private String ticker;
     private String quantity;
+    private String orderType;
 }

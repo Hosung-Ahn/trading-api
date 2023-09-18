@@ -1,10 +1,10 @@
 package com.kiapi.api;
 
 import com.kiapi.dto.kiapi.request.AccessTokenRequest;
-import com.kiapi.dto.kiapi.request.OrderStockRequest;
 import com.kiapi.dto.request.DomesticStockOnMarkerPriceRequest;
 import com.kiapi.dto.kiapi.response.AccessTokenResponse;
 import com.kiapi.entity.member.Member;
+import com.kiapi.factory.kiapi.OrderStockRequestFactory;
 import com.kiapi.security.aes.AESUtil;
 import com.kiapi.service.redis.KiApiAccessTokenService;
 import lombok.RequiredArgsConstructor;
@@ -121,11 +121,11 @@ public class kiApiService {
                     header.setContentType(MediaType.APPLICATION_JSON);
                     header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                     header.setBearerAuth(accessToken);
-                    header.add("tr_id", "VTTC0802U");
+                    header.add("tr_id", TradeId.fromType(requestDto.getOrderType()).getCode());
                     header.add("appkey", appKey);
                     header.add("appsecret", secretKey);
                 })
-                .bodyValue(new OrderStockRequest(account, requestDto))
+                .bodyValue(OrderStockRequestFactory.StockOnMarketPriceRequest(account, requestDto))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
